@@ -1,4 +1,6 @@
+using MedicinskiSustav.Automapper;
 using MedicinskiSustav.Models;
+using MedicinskiSustav.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,8 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MedicinskiDbContext>(options => 
     options.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString("conStr")));
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
@@ -24,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Pacijenti}/{action=Index}/{id?}");
 
 app.Run();

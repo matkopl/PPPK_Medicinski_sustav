@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Pacijent>
+
+<h1>Popis pacijenata</h1>
+
+<form method="get">
+    <div class="input-group mb-3">
+        <input type="text" name="search" class="form-control" placeholder="Pretraži po prezimenu ili OIB-u">
+        <button type="submit" class="btn btn-primary">Pretraži</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>OIB</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Datum rođenja</th>
+            <th>Spol</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OIB</td>
+                <td>@item.Ime</td>
+                <td>@item.Prezime</td>
+                <td>@item.DatumRodjenja.ToString("dd.MM.yyyy")</td>
+                <td>@item.Spol</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Uredi</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalji</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Obriši</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Novi pacijent</a>
+<a asp-action="ExportToCsv" class="btn btn-secondary">Export CSV</a>

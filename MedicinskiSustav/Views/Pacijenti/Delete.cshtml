@@ -1,0 +1,11 @@
+﻿@model Pacijent
+
+<h2>Obriši pacijenta</h2>
+
+<p>Jeste li sigurni da želite obrisati pacijenta @Model.Ime @Model.Prezime (OIB: @Model.OIB)?</p>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Obriši</button>
+    <a asp-action="Index" class="btn btn-secondary">Odustani</a>
+</form>
