@@ -1,23 +1,20 @@
 ﻿@model MedicinskiSustav.Viewmodels.PacijentDetailsVM
 
 <h2>Detalji pacijenta</h2>
-
 <dl class="row">
     <dt class="col-sm-3">OIB:</dt>
     <dd class="col-sm-9">@Model.OIB</dd>
-
     <dt class="col-sm-3">Ime:</dt>
     <dd class="col-sm-9">@Model.Ime</dd>
-
     <dt class="col-sm-3">Prezime:</dt>
     <dd class="col-sm-9">@Model.Prezime</dd>
-
     <dt class="col-sm-3">Datum rođenja:</dt>
     <dd class="col-sm-9">@Model.DatumRodjenja.ToString("dd.MM.yyyy")</dd>
-
     <dt class="col-sm-3">Spol:</dt>
     <dd class="col-sm-9">@Model.Spol</dd>
 </dl>
+
+<a asp-action="ExportToCsv" asp-route-id="@Model.Id" class="btn btn-secondary mb-3">Export u CSV</a>
 
 <h3>Povijest bolesti</h3>
 @if (Model.Bolesti?.Any() == true)
@@ -33,5 +30,41 @@ else
 {
     <p>Nema zabilježenih bolesti.</p>
 }
+<a asp-controller="Dokumentacije" asp-action="CreateBolest" asp-route-dokumentacijaId="@Model.DokumentacijaId" class="btn btn-success mb-3">
+    <i class="fas fa-plus"></i> Dodaj bolest
+</a>
 
-<a asp-action="Index" class="btn btn-secondary">Natrag</a>
+<h3>Pregledi</h3>
+@if (Model.Pregledi?.Any() == true)
+{
+    <ul>
+        @foreach (var pregled in Model.Pregledi)
+        {
+            <li>
+                @pregled.SifraPregleda (@pregled.VrijemePregleda.ToString("dd.MM.yyyy"))
+                @if (pregled.Recepti?.Any() == true)
+                {
+                    <ul>
+                        @foreach (var recept in pregled.Recepti)
+                        {
+                            <li>Recept: @recept.Lijek</li>
+                        }
+                    </ul>
+                }
+                @if (pregled.Slike?.Any() == true)
+                {
+                    <ul>
+                        @foreach (var slika in pregled.Slike)
+                        {
+                            <li>Slika: @slika.Putanja</li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Nema zabilježenih pregleda.</p>
+}

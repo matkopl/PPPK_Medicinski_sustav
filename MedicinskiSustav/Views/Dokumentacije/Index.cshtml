@@ -1,0 +1,27 @@
+﻿@model IEnumerable<MedicinskiSustav.Viewmodels.DokumentacijaDetailsVM>
+
+<h2>Medicinske dokumentacije</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Pacijent</th>
+            <th>Broj bolesti</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PacijentImePrezime</td>
+                <td>@(item.Bolesti?.Count ?? 0)</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                        <i class="fas fa-info-circle"></i> Detalji
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

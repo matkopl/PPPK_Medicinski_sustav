@@ -39,3 +39,25 @@
 
     <button type="submit" class="btn btn-primary">Spremi promjene</button>
 </form>
+
+@section Scripts {
+    <script>
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Spremi promjene?',
+                text: "Jeste li sigurni da želite ažurirati podatke o pacijentu?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Da, spremi!',
+                cancelButtonText: 'Odustani'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    </script>
+}

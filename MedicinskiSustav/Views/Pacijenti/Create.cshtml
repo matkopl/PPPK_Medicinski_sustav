@@ -37,3 +37,25 @@
 
     <button type="submit" class="btn btn-primary">Dodaj</button>
 </form>
+
+@section Scripts {
+    <script>
+        document.getElementById('createForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Dodaj novog pacijenta?',
+                text: "Jeste li sigurni da želite dodati ovog pacijenta?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Da, dodaj!',
+                cancelButtonText: 'Odustani'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    </script>
+}

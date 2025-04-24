@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Pacijent>
+﻿@model IEnumerable<MedicinskiSustav.Viewmodels.PacijentVM>
 
 <h1>Popis pacijenata</h1>
 
@@ -30,14 +30,24 @@
                 <td>@item.DatumRodjenja.ToString("dd.MM.yyyy")</td>
                 <td>@item.Spol</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Uredi</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalji</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Obriši</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Uredi
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                        <i class="fas fa-info-circle"></i> Detalji
+                    </a>
+                    <form asp-action="Delete" method="post" style="display:inline">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        @Html.AntiForgeryToken()
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete(this)">
+                            <i class="fas fa-trash"></i> Obriši
+                        </button>
+                    </form>
                 </td>
+
             </tr>
         }
     </tbody>
 </table>
 
 <a asp-action="Create" class="btn btn-success">Novi pacijent</a>
-<a asp-action="ExportToCsv" class="btn btn-secondary">Export CSV</a>
