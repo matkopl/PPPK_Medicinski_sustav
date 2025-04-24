@@ -126,7 +126,15 @@ namespace MedicinskiSustav.Controllers
             }
 
             var repo = _repositoryFactory.GetRepository<Pacijent>();
-            var pacijent = await repo.GetByIdAsync(id.Value);
+            var pacijent = await repo.GetAll()
+                .Include(p => p.Dokumentacija)
+                    .ThenInclude(d => d.Bolesti)
+                .Include(p => p.Pregledi)
+                    .ThenInclude(p => p.Recepti)
+                .Include(p => p.Pregledi)
+                    .ThenInclude(p => p.Slike)
+               .FirstOrDefaultAsync(p => p.Id == id);
+                
 
             if (pacijent == null)
             {
@@ -185,7 +193,7 @@ namespace MedicinskiSustav.Controllers
             }
 
             stream.Position = 0;
-            return File(stream, "text/csv", $"Pacijenti_{DateTime.Now:ddMMyyyyHHmmss}.csv");
+            return File(stream, "text/csv", $"Pacijent {exportModel.First().Ime} {exportModel.First().Prezime} {DateTime.Now:dd.MM.yyyy}.csv");
         }
     }
 }

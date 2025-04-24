@@ -17,6 +17,20 @@ namespace MedicinskiSustav.Automapper
 
             CreateMap<Bolest, BolestVM>().ReverseMap();
             CreateMap<MedicinskaDokumentacija, DokumentacijaDetailsVM>().ReverseMap();
+
+            CreateMap<Pregled, PregledVM>()
+                .ForMember(dest => dest.SifraPregleda, opt => opt.MapFrom(src => src.SifraPregleda.ToString()))
+                .ForMember(dest => dest.PacijentImePrezime, opt => opt.MapFrom(src => src.Pacijent.Ime + " " + src.Pacijent.Prezime));
+            CreateMap<PregledCreateVM, Pregled>();
+            CreateMap<Pregled, PregledDetailsVM>()
+                .ForMember(dest => dest.PacijentImePrezime, opt => opt.MapFrom(src => src.Pacijent.Ime + " " + src.Pacijent.Prezime))
+                .ForMember(dest => dest.Recepti, opt => opt.MapFrom(src => src.Recepti))
+                .ForMember(dest => dest.Slike, opt => opt.MapFrom(src => src.Slike));
+            CreateMap<Pregled, PregledEditVM>().ReverseMap();
+
+            CreateMap<Recept, ReceptVM>().ReverseMap();
+
+            CreateMap<Slika, SlikaVM>().ReverseMap();
         }
     }
 }

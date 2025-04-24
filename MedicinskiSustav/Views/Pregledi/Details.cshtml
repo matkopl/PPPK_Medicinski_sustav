@@ -1,0 +1,70 @@
+﻿@model MedicinskiSustav.Viewmodels.PregledDetailsVM
+
+<div class="container">
+    <h2>Detalji pregleda</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Šifra pregleda:</dt>
+                <dd class="col-sm-9">@Model.SifraPregleda</dd>
+
+                <dt class="col-sm-3">Vrijeme pregleda:</dt>
+                <dd class="col-sm-9">@Model.VrijemePregleda.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-3">Pacijent:</dt>
+                <dd class="col-sm-9">@Model.PacijentImePrezime</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title">Recepti</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Recepti?.Any() == true)
+            {
+                <ul class="list-group">
+                    @foreach (var recept in Model.Recepti)
+                    {
+                        <li class="list-group-item">@recept.Lijek</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Nema izdanih recepata</p>
+            }
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title">Slike</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Slike?.Any() == true)
+            {
+                <div class="row">
+                    @foreach (var slika in Model.Slike)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <img src="@slika.Putanja"
+                                 class="img-fluid rounded"
+                                 alt="Snimka pregleda">
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">Nema priloženih slika</p>
+            }
+        </div>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary mt-4">
+        <i class="fas fa-arrow-left"></i> Povratak na listu
+    </a>
+</div>
