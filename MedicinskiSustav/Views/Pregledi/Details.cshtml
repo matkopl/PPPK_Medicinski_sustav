@@ -18,30 +18,46 @@
         </div>
     </div>
 
-    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title">Recepti</h3>
-        </div>
-        <div class="card-body">
-            @if (Model.Recepti?.Any() == true)
-            {
-                <ul class="list-group">
-                    @foreach (var recept in Model.Recepti)
-                    {
-                        <li class="list-group-item">@recept.Lijek</li>
-                    }
-                </ul>
-            }
-            else
-            {
-                <p class="text-muted">Nema izdanih recepata</p>
-            }
-        </div>
-    </div>
+    <h3>Recepti</h3>
 
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title">Slike</h3>
+    @if (Model.Recepti?.Any() == true)
+    {
+        <ul class="list-group">
+            @foreach (var recept in Model.Recepti)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <i class="fas fa-prescription me-2"></i> @recept.Lijek
+                    </span>
+                    <span>
+                        <a asp-controller="Recepti" asp-action="Edit" asp-route-id="@recept.Id" class="btn btn-warning btn-sm me-1">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form asp-controller="Recepti" asp-action="Delete" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@recept.Id" />
+                            @Html.AntiForgeryToken()
+                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </span>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">Nema izdanih recepata</p>
+    }
+    <a asp-controller="Recepti" asp-action="Create" asp-route-pregledId="@Model.Id" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Novi recept
+    </a>
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">Slike</h3>
+            <a asp-controller="Slike" asp-action="Create" asp-route-pregledId="@Model.Id" class="btn btn-success btn-sm">
+                <i class="fas fa-plus"></i> Nova slika
+            </a>
         </div>
         <div class="card-body">
             @if (Model.Slike?.Any() == true)
@@ -49,10 +65,24 @@
                 <div class="row">
                     @foreach (var slika in Model.Slike)
                     {
-                        <div class="col-md-4 mb-3">
-                            <img src="@slika.Putanja"
-                                 class="img-fluid rounded"
-                                 alt="Snimka pregleda">
+                        <div class="col-md-4 mb-4 d-flex flex-column align-items-center">
+                            <div class="card w-100">
+                                <img src="@slika.Putanja"
+                                     class="card-img-top img-fluid"
+                                     alt="Snimka pregleda"
+                                     style="height: 200px; object-fit: cover;">
+                                <div class="card-footer text-center">
+                                    <form asp-controller="Slike" asp-action="Delete" method="post" style="display: inline">
+                                        <input type="hidden" name="id" value="@slika.Id" />
+                                        @Html.AntiForgeryToken()
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="confirmDelete(this)">
+                                            <i class="fas fa-trash"></i> Obriši
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     }
                 </div>
@@ -63,6 +93,7 @@
             }
         </div>
     </div>
+
 
     <a asp-action="Index" class="btn btn-secondary mt-4">
         <i class="fas fa-arrow-left"></i> Povratak na listu

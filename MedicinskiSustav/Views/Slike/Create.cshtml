@@ -1,0 +1,21 @@
+﻿@model MedicinskiSustav.Viewmodels.SlikaCreateVM
+
+<h2>Dodaj novu sliku</h2>
+
+<form asp-action="Create" enctype="multipart/form-data">
+    <input type="hidden" asp-for="PregledId" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Slika" class="form-label"></label>
+        <input asp-for="Slika" type="file" class="form-control" />
+        <span asp-validation-for="Slika" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-upload"></i> Upload
+    </button>
+    <a asp-controller="Pregledi" asp-action="Details"
+       asp-route-id="@Model.PregledId" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Natrag
+    </a>
+</form>

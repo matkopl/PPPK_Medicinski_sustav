@@ -29,8 +29,11 @@ namespace MedicinskiSustav.Automapper
             CreateMap<Pregled, PregledEditVM>().ReverseMap();
 
             CreateMap<Recept, ReceptVM>().ReverseMap();
+            CreateMap<ReceptCreateVM, Recept>();
+            CreateMap<ReceptEditVM, Recept>().ReverseMap();
 
             CreateMap<Slika, SlikaVM>().ReverseMap();
+            CreateMap<SlikaCreateVM, Slika>();
         }
     }
 }

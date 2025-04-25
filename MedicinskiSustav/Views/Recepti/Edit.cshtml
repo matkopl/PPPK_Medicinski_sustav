@@ -1,0 +1,19 @@
+﻿@model MedicinskiSustav.Viewmodels.ReceptEditVM
+
+<h2>Uredi recept</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="PregledId" />
+    <div class="form-group mb-3">
+        <label asp-for="Lijek"></label>
+        <input asp-for="Lijek" class="form-control" />
+        <span asp-validation-for="Lijek" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> Spremi promjene
+    </button>
+    <a asp-controller="Pregledi" asp-action="Details" asp-route-id="@Model.PregledId" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Natrag
+    </a>
+</form>
