@@ -18,8 +18,4 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\uploads\5031be3d-dad3-4ff0-baab-dd1d1f99adec_alh.png\" />
-  </ItemGroup>
-
 </Project>

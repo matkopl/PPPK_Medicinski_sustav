@@ -46,7 +46,7 @@ namespace MedicinskiSustav.Controllers
                 }
 
                 var uniqueFileName = $"{Guid.NewGuid()}_{slikaCreateVM.Slika.FileName}";
-                var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "slike");
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                 Directory.CreateDirectory(uploadsFolder);
@@ -58,7 +58,7 @@ namespace MedicinskiSustav.Controllers
 
                 Slika slika = new()
                 {
-                    Putanja = $"/uploads/{uniqueFileName}",
+                    Putanja = $"/slike/{uniqueFileName}",
                     PregledId = slikaCreateVM.PregledId
                 };
 

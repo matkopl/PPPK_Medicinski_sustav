@@ -1,8 +1,45 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Medicinski sustav";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-3 mb-4 fw-bold text-dark">
+                <i class="fas fa-clinic-medical"></i> Dobrodošli u Medicinski sustav
+            </h1>
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="fas fa-users fa-2x text-dark mb-2"></i>
+                            <h5 class="card-title">Pacijenti</h5>
+                            <p class="card-text">Dodaj, uređuj i pretražuj pacijente i njihovu povijest bolesti.</p>
+                            <a asp-controller="Pacijenti" asp-action="Index" class="btn btn-outline-dark btn-sm">Popis pacijenata</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="fas fa-stethoscope fa-2x text-dark mb-2"></i>
+                            <h5 class="card-title">Pregledi</h5>
+                            <p class="card-text">Evidencija svih pregleda, recepata i medicinskih slika.</p>
+                            <a asp-controller="Pregledi" asp-action="Index" class="btn btn-outline-dark btn-sm">Popis pregleda</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="fas fa-notes-medical fa-2x text-dark mb-2"></i>
+                            <h5 class="card-title">Dokumentacije</h5>
+                            <p class="card-text">Pregledaj i uređuj medicinsku dokumentaciju svakog pacijenta.</p>
+                            <a asp-controller="Dokumentacije" asp-action="Index" class="btn btn-outline-dark btn-sm">Medicinske dokumentacije</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
