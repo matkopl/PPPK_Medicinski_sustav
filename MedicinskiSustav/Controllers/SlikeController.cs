@@ -4,6 +4,8 @@ using MedicinskiSustav.Repositories;
 using MedicinskiSustav.Viewmodels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Minio;
+using Minio.DataModel.Args;
 using System.Linq;
 
 namespace MedicinskiSustav.Controllers
@@ -12,13 +14,15 @@ namespace MedicinskiSustav.Controllers
     {
         private readonly IRepositoryFactory _repositoryFactory;
         private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _env;
+        private readonly IMinioClient _minio;
+        private readonly string _bucket;
 
-        public SlikeController(IRepositoryFactory repositoryFactory, IMapper mapper, IWebHostEnvironment env)
+        public SlikeController(IRepositoryFactory repositoryFactory, IMapper mapper, IMinioClient minio, IConfiguration config)
         {
             _repositoryFactory = repositoryFactory;
             _mapper = mapper;
-            _env = env;
+            _minio = minio;
+            _bucket = config["Minio:Bucket"] ?? "slike";
         }
 
         // GET: SlikeController/Create
@@ -45,20 +49,31 @@ namespace MedicinskiSustav.Controllers
                     return View(slikaCreateVM);
                 }
 
-                var uniqueFileName = $"{Guid.NewGuid()}_{slikaCreateVM.Slika.FileName}";
-                var uploadsFolder = Path.Combine(_env.WebRootPath, "slike");
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                var uniqueFileName = $"{Guid.NewGuid()}-{slikaCreateVM.Slika.FileName}";
+                var beArgs = new BucketExistsArgs().WithBucket(_bucket);
+                bool found = await _minio.BucketExistsAsync(beArgs);
 
-                Directory.CreateDirectory(uploadsFolder);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                if (!found)
                 {
-                    await slikaCreateVM.Slika.CopyToAsync(stream);
+                    var mbArgs = new MakeBucketArgs().WithBucket(_bucket);
+                    await _minio.MakeBucketAsync(mbArgs);
+                }
+
+                using (var stream = slikaCreateVM.Slika.OpenReadStream())
+                {
+                    var putObjectArgs = new PutObjectArgs()
+                        .WithBucket(_bucket)
+                        .WithObject(uniqueFileName)
+                        .WithStreamData(stream)
+                        .WithObjectSize(stream.Length)
+                        .WithContentType(slikaCreateVM.Slika.ContentType);
+
+                    await _minio.PutObjectAsync(putObjectArgs);
                 }
 
                 Slika slika = new()
                 {
-                    Putanja = $"/slike/{uniqueFileName}",
+                    Putanja = uniqueFileName,
                     PregledId = slikaCreateVM.PregledId
                 };
 
@@ -86,12 +101,11 @@ namespace MedicinskiSustav.Controllers
                 return NotFound();
             }
 
-            var filePath = Path.Combine(_env.WebRootPath, slika.Putanja.TrimStart('/'));
+            var removeObjectArgs = new RemoveObjectArgs()
+                 .WithBucket(_bucket)
+                 .WithObject(slika.Putanja);
 
-            if (System.IO.File.Exists(filePath))
-            {
-                System.IO.File.Delete(filePath);
-            }
+            await _minio.RemoveObjectAsync(removeObjectArgs);
 
             await repo.DeleteAsync(id);
             await repo.SaveAsync();

@@ -2,6 +2,7 @@ using MedicinskiSustav.Automapper;
 using MedicinskiSustav.Models;
 using MedicinskiSustav.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Minio.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,13 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+
+builder.Services.AddMinio(options =>
+{
+    options.Endpoint = builder.Configuration["Minio:Endpoint"];
+    options.AccessKey = builder.Configuration["Minio:AccessKey"];
+    options.SecretKey = builder.Configuration["Minio:SecretKey"];
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
