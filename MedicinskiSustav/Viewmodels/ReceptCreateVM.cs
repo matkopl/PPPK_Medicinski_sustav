@@ -4,9 +4,8 @@ namespace MedicinskiSustav.Viewmodels
 {
     public class ReceptCreateVM
     {
-        [Required]
-        public string Lijek {  get; set; }
-
+        [Required(ErrorMessage = "Odaberite lijek")]
+        public int LijekId { get; set; }
         public int PregledId { get; set; }
     }
 }

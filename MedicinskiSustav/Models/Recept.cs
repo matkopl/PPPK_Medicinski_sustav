@@ -8,9 +8,9 @@ namespace MedicinskiSustav.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Lijek { get; set; }
+        [ForeignKey("Lijek")]
+        public int LijekId { get; set; }
+        public virtual Lijek Lijek { get; set; }
 
         [ForeignKey("Pregled")]
         public int PregledId { get; set; }

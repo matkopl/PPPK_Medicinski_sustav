@@ -28,7 +28,8 @@ namespace MedicinskiSustav.Automapper
                 .ForMember(dest => dest.Slike, opt => opt.MapFrom(src => src.Slike));
             CreateMap<Pregled, PregledEditVM>().ReverseMap();
 
-            CreateMap<Recept, ReceptVM>().ReverseMap();
+            CreateMap<Recept, ReceptVM>()
+                .ForMember(dest => dest.LijekNaziv, opt => opt.MapFrom(src => src.Lijek.Naziv));
             CreateMap<ReceptCreateVM, Recept>();
             CreateMap<ReceptEditVM, Recept>().ReverseMap();
 

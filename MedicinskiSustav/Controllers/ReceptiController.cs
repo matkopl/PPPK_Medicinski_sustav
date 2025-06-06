@@ -4,6 +4,7 @@ using MedicinskiSustav.Repositories;
 using MedicinskiSustav.Viewmodels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MedicinskiSustav.Controllers
 {
@@ -21,8 +22,12 @@ namespace MedicinskiSustav.Controllers
         // GET: ReceptiController/Create
         public IActionResult Create(int pregledId)
         {
-            var vm = new ReceptCreateVM { PregledId = pregledId };
+            var lijekoviRepo = _repositoryFactory.GetRepository<Lijek>();
+            var lijekovi = lijekoviRepo.GetAll();
 
+            ViewBag.Lijekovi = new SelectList(lijekovi, "Id", "Naziv");    
+
+            var vm = new ReceptCreateVM { PregledId = pregledId };
             return View(vm);
         }
 
@@ -43,6 +48,10 @@ namespace MedicinskiSustav.Controllers
                 return RedirectToAction("Details", "Pregledi", new { id = receptCreateVM.PregledId });
             }
 
+            var lijekoviRepo = _repositoryFactory.GetRepository<Lijek>();
+            var lijekovi = lijekoviRepo.GetAll();
+            ViewBag.Lijekovi = new SelectList(lijekovi, "Id", "Naziv", receptCreateVM.LijekId);
+
             return View(receptCreateVM);
         }
 
@@ -56,6 +65,11 @@ namespace MedicinskiSustav.Controllers
             {
                 return NotFound();
             }
+
+            var lijekoviRepo = _repositoryFactory.GetRepository<Lijek>();
+            var lijekovi = lijekoviRepo.GetAll();
+
+            ViewBag.Lijekovi = new SelectList(lijekovi, "Id", "Naziv", recept.LijekId);
 
             var vm = _mapper.Map<ReceptEditVM>(recept);
             return View(vm);

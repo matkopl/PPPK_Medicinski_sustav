@@ -5,9 +5,9 @@
 <form asp-action="Create">
     <input type="hidden" asp-for="PregledId" />
     <div class="form-group mb-3">
-        <label asp-for="Lijek"></label>
-        <input asp-for="Lijek" class="form-control" />
-        <span asp-validation-for="Lijek" class="text-danger"></span>
+        <label asp-for="LijekId">Lijek</label>
+        <select asp-for="LijekId" asp-items="ViewBag.Lijekovi" class="form-select"></select>
+        <span asp-validation-for="LijekId" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">
         <i class="fas fa-save"></i> Spremi

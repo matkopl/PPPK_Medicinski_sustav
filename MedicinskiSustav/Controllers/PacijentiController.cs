@@ -181,7 +181,7 @@ namespace MedicinskiSustav.Controllers
             Spol = pacijent.Spol.ToString(),
             Bolesti = string.Join(" | ", pacijent.Dokumentacija?.Bolesti?.Select(b => b.Naziv) ?? new List<string>()),
             Pregledi = string.Join(" | ", pacijent.Pregledi?.Select(pr => $"{pr.SifraPregleda} {pr.VrijemePregleda:dd.MM.yyyy}") ?? new List<string>()),
-            Recepti = string.Join(" | ", pacijent.Pregledi?.SelectMany(pr => pr.Recepti).Select(r => r.Lijek) ?? new List<string>())
+            Recepti = string.Join(" | ", pacijent.Pregledi?.SelectMany(pr => pr.Recepti).Select(r => r.Lijek.Naziv) ?? new List<string>())
         }
     };
 

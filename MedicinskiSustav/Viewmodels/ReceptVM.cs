@@ -3,6 +3,7 @@
     public class ReceptVM
     {
         public int Id { get; set; }
-        public string Lijek { get; set; }
+        public int LijekId { get; set; }
+        public string LijekNaziv { get; set; }
     }
 }

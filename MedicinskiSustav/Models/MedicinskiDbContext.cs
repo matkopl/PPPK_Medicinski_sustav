@@ -13,6 +13,7 @@ namespace MedicinskiSustav.Models
         public DbSet<Pregled> Pregledi { get; set; }
         public DbSet<Slika> Slike { get; set; }
         public DbSet<Recept> Recepti { get; set; }
+        public DbSet<Lijek> Lijekovi { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,12 @@ namespace MedicinskiSustav.Models
                 .HasMany(p => p.Pregledi)
                 .WithOne(p => p.Pacijent)
                 .HasForeignKey(p => p.PacijentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Recept>()
+                .HasOne(r => r.Lijek)
+                .WithMany(l => l.Recepti)
+                .HasForeignKey(r => r.LijekId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Konfiguracija enuma
